@@ -52,12 +52,57 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Migrations\201609021228111_InitialCreate.cs" />
+    <Compile Include="Migrations\201609021228111_InitialCreate.Designer.cs">
+      <DependentUpon>201609021228111_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609021731406_AddUrl.cs" />
+    <Compile Include="Migrations\201609021731406_AddUrl.Designer.cs">
+      <DependentUpon>201609021731406_AddUrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609021735369_AddUser.cs" />
+    <Compile Include="Migrations\201609021735369_AddUser.Designer.cs">
+      <DependentUpon>201609021735369_AddUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609021738105_ChangeDisplayName.cs" />
+    <Compile Include="Migrations\201609021738105_ChangeDisplayName.Designer.cs">
+      <DependentUpon>201609021738105_ChangeDisplayName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609021742368_AddOrganization.cs" />
+    <Compile Include="Migrations\201609021742368_AddOrganization.Designer.cs">
+      <DependentUpon>201609021742368_AddOrganization.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609021745108_AddOrganization_Update1.cs" />
+    <Compile Include="Migrations\201609021745108_AddOrganization_Update1.Designer.cs">
+      <DependentUpon>201609021745108_AddOrganization_Update1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201609021228111_InitialCreate.resx">
+      <DependentUpon>201609021228111_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609021731406_AddUrl.resx">
+      <DependentUpon>201609021731406_AddUrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609021735369_AddUser.resx">
+      <DependentUpon>201609021735369_AddUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609021738105_ChangeDisplayName.resx">
+      <DependentUpon>201609021738105_ChangeDisplayName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609021742368_AddOrganization.resx">
+      <DependentUpon>201609021742368_AddOrganization.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609021745108_AddOrganization_Update1.resx">
+      <DependentUpon>201609021745108_AddOrganization_Update1.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
