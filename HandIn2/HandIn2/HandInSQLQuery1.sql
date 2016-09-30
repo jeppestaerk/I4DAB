@@ -35,7 +35,7 @@ SELECT * from Person
 SELECT * from Telefon
 SELECT * from Adresse
 
-DELETE FROM Person WHERE Person.Fornavn = 'Juliane'
+DELETE FROM Person WHERE Person.Fornavn = 'Juliane' AND Person.Efternavn = 'Petersen'
 
 SELECT * from Person
 SELECT * from Telefon
