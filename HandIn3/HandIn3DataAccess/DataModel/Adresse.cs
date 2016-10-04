@@ -1,7 +1,8 @@
-﻿namespace HandIn3DataAccess.Adresse
+﻿namespace HandIn3DataAccess.DataModel
 {
-    internal class Adresse
+    public class Adresse
     {
+        public long AdresseId { get; set; }
         public string Vejnavn { get; set; }
         public string Husnummer { get; set; }
         public string Postnummer { get; set; }

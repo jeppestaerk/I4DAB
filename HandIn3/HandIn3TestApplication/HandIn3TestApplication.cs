@@ -1,52 +1,25 @@
-﻿using System;
+﻿using HandIn3DataAccess.DataModel;
 
 namespace HandIn3TestApplication
 {
     class HandIn3TestApplication
     {
-        // call methods that demo SqlCommand capabilities
         static void Main()
         {
-            SqlCommandDemo scd = new SqlCommandDemo();
+            PersonkartotekDataUtil personkartotek = new PersonkartotekDataUtil();
 
-            Console.WriteLine();
-            Console.WriteLine("Persons Before Insert");
-            Console.WriteLine("------------------------");
+            personkartotek.setCurrentPerson("Michael", "Nicholajsen");
+            personkartotek.getCurrentTelefon();
+            personkartotek.getCurrentAdresse();
 
-            // use ExecuteReader method
-            scd.ReadData();
-
-            // use ExecuteNonQuery method for Insert
-            scd.Insertdata();
-            Console.WriteLine();
-            Console.WriteLine("Persons After Insert");
-            Console.WriteLine("------------------------------");
-
-            scd.ReadData();
-
-            // use ExecuteNonQuery method for Update
-            scd.UpdateData();
-
-            Console.WriteLine();
-            Console.WriteLine("Persons After Update");
-            Console.WriteLine("------------------------------");
-
-            scd.ReadData();
-
-            // use ExecuteNonQuery method for Delete
-            scd.DeleteData();
-
-            Console.WriteLine();
-            Console.WriteLine("Persons After Delete");
-            Console.WriteLine("------------------------------");
-
-            scd.ReadData();
-
-            // use ExecuteScalar method
-            int numberOfRecords = scd.GetNumberOfRecords();
-
-            Console.WriteLine();
-            Console.WriteLine("Number of Records: {0}", numberOfRecords);
+            personkartotek.setCurrentPerson(2);
+            personkartotek.getCurrentTelefon();
+            personkartotek.getCurrentAdresse();
+            Person locPerson = personkartotek.currentPerson;
+            locPerson.Mellemnavn = "P";
+            locPerson.PersonType = "fjende";
+            personkartotek.UpdateCurrentPerson();
+            personkartotek.setCurrentPerson(2);
         }
     }
 }

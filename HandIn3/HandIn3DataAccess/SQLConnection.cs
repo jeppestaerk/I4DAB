@@ -1,55 +1,58 @@
-﻿using System;
+﻿using HandIn3DataAccess.DataModel;
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
 
-/// <summary>
-/// Demonstrates how to work with SqlCommand objects
-/// </summary>
-public class SqlCommandDemo
+public class PersonkartotekDataUtil
 {
+    private Person locPerson;
     SqlConnection conn;
 
-    public SqlCommandDemo()
+    public Person currentPerson
     {
-        // Instantiate the connection
-        conn = new SqlConnection(
-@"Data Source=JEPPESTAERK\SQLEXPRESS;Initial Catalog='I4DAB HandIn2';Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=True");
+        get { return locPerson; }
     }
 
-    /// <summary>
-    /// use ExecuteReader method
-    /// </summary>
-    public void ReadData()
+    public PersonkartotekDataUtil()
+    {
+        conn = new SqlConnection(@"Data Source=JEPPESTAERK\SQLEXPRESS;Initial Catalog='I4DAB HandIn2';Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=True");
+    }
+
+    public void setCurrentPerson(string fornavn, string efternavn)
     {
         SqlDataReader rdr = null;
 
         try
         {
-            // Open the connection
             conn.Open();
 
-            // 1. Instantiate a new command with a query and connection
-            SqlCommand cmd = new SqlCommand("SELECT Person.Fornavn FROM Person", conn);
+            SqlCommand cmd = new SqlCommand($"SELECT * FROM Person WHERE Fornavn = '{fornavn}' AND Efternavn = '{efternavn}'", conn);
 
-            // 2. Call Execute reader to get query results
             rdr = cmd.ExecuteReader();
 
-            // print the CategoryName of each record
             while (rdr.Read())
             {
-                Console.WriteLine(rdr[0]);
+                Console.WriteLine($"Navn: {rdr["Fornavn"]} {rdr["Mellemnavn"]} {rdr["Efternavn"]}");
+                locPerson = new Person();
+                locPerson.PersonId = (long) rdr["PersonID"];
+                locPerson.Fornavn = (string) rdr["Fornavn"];
+                locPerson.Mellemnavn = (string) rdr["Mellemnavn"];
+                locPerson.Efternavn = (string) rdr["Efternavn"];
+                locPerson.PersonType = (string) rdr["PersonType"];
+                locPerson.AdresseId = (long)rdr["AdresseID"];
+                break;
+
             }
         }
         finally
         {
-            // close the reader
             if (rdr != null)
             {
                 rdr.Close();
             }
 
-            // Close the connection
             if (conn != null)
             {
                 conn.Close();
@@ -57,45 +60,39 @@ public class SqlCommandDemo
         }
     }
 
-    /// <summary>
-    /// use ExecuteNonQuery method for Insert
-    /// </summary>
-    public void Insertdata()
+    public void setCurrentPerson(long id)
     {
+        SqlDataReader rdr = null;
+
         try
         {
-            // Open the connection
             conn.Open();
 
-            // prepare command string
-            //string insertString = @"
-            //    INSERT INTO Adresse(Vejnavn,Husnummer,Postnummer,Bynavn) 
-            //    VALUES('Strandvejen','30B','8000','Aarhus C') 
-            //    INSERT INTO Person(Fornavn, Mellemnavn, Efternavn, PersonType, AdresseID) 
-            //    VALUES('Jeppe', '', 'Stærk', 'homie', (SELECT Adresse.AdresseID FROM Adresse WHERE Vejnavn = 'Strandvejen' AND Husnummer = '30B'))
-            //    INSERT INTO Telefon(Telefonnummer, TelefonType, PersonID) 
-            //    VALUES('50403000', 'mobil', (SELECT Person.PersonID FROM Person WHERE Fornavn = 'Jeppe' AND Efternavn = 'Stærk'))";
-            //string insertString = @"
-            //    INSERT INTO Adresse(Vejnavn,Husnummer,Postnummer,Bynavn) 
-            //    VALUES('Strandvejen','30B','8000','Aarhus C') ";
-            string insertString = @"
-                INSERT INTO Person(Fornavn, Mellemnavn, Efternavn, PersonType, AdresseID) 
-                VALUES('Jeppe', '', 'Stærk', 'homie', (SELECT Adresse.AdresseID FROM Adresse WHERE Vejnavn = 'Paludan mullersvej' AND Husnummer = '18'))";
-            //string insertString =
-            //    @"INSERT INTO Telefon(Telefonnummer, TelefonType, PersonID) 
-            //    VALUES('50403000', 'mobil', (SELECT Person.PersonID FROM Person WHERE Fornavn = 'Jeppe' AND Efternavn = 'Stærk'))";
+            SqlCommand cmd = new SqlCommand($"SELECT * FROM Person WHERE PersonID = '{id}'", conn);
 
+            rdr = cmd.ExecuteReader();
 
+            while (rdr.Read())
+            {
+                Console.WriteLine($"Navn: {rdr["Fornavn"]} {rdr["Mellemnavn"]} {rdr["Efternavn"]}");
+                locPerson = new Person();
+                locPerson.PersonId = (long) rdr["PersonID"];
+                locPerson.Fornavn = (string) rdr["Fornavn"];
+                locPerson.Mellemnavn = (string) rdr["Mellemnavn"];
+                locPerson.Efternavn = (string) rdr["Efternavn"];
+                locPerson.PersonType = (string) rdr["PersonType"];
+                locPerson.AdresseId = (long) rdr["AdresseID"];
+                break;
 
-            // 1. Instantiate a new command with a query and connection
-            SqlCommand cmd = new SqlCommand(insertString, conn);
-
-            // 2. Call ExecuteNonQuery to send command
-            cmd.ExecuteNonQuery();
+            }
         }
         finally
         {
-            // Close the connection
+            if (rdr != null)
+            {
+                rdr.Close();
+            }
+
             if (conn != null)
             {
                 conn.Close();
@@ -103,34 +100,47 @@ public class SqlCommandDemo
         }
     }
 
-    /// <summary>
-    /// use ExecuteNonQuery method for Update
-    /// </summary>
-    public void UpdateData()
+    public void getCurrentTelefon()
     {
+        SqlDataReader rdr = null;
+        string selectTelefonString = @"SELECT Telefon.* 
+                                        FROM Person INNER JOIN 
+                                        Telefon ON Person.PersonID = Telefon.PersonID
+                                        WHERE (Person.PersonID = @Data1)";
+
         try
         {
-            // Open the connection
             conn.Open();
 
-            // prepare command string
-            string updateString = @"
-                UPDATE Person
-                SET Person.Fornavn = 'Jebbe'
-                WHERE Person.Fornavn = 'Jeppe'";
+            using (SqlCommand cmd = new SqlCommand(selectTelefonString, conn))
+            {
+                cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data1";
+                cmd.Parameters["@Data1"].Value = this.locPerson.PersonId;
 
-            // 1. Instantiate a new command with command text only
-            SqlCommand cmd = new SqlCommand(updateString);
+                rdr = cmd.ExecuteReader();
 
-            // 2. Set the Connection property
-            cmd.Connection = conn;
+                locPerson.Ejer = new List<Telefon>();
+                Telefon locTelefon = null;
 
-            // 3. Call ExecuteNonQuery to send command
-            cmd.ExecuteNonQuery();
+                while (rdr.Read())
+                {
+                    Console.WriteLine($"Telefonnummer: {rdr["Telefonnummer"]}");
+                    locTelefon = new Telefon();
+                    locTelefon.TelefonId = (long) rdr["TelefonID"];
+                    locTelefon.Telefonnummer = (string) rdr["Telefonnummer"];
+                    locTelefon.TelefonType = (string) rdr["TelefonType"];
+                    locPerson.Ejer.Add(locTelefon);
+                }
+            }
+
         }
         finally
         {
-            // Close the connection
+            if (rdr != null)
+            {
+                rdr.Close();
+            }
+
             if (conn != null)
             {
                 conn.Close();
@@ -138,37 +148,49 @@ public class SqlCommandDemo
         }
     }
 
-    /// <summary>
-    /// use ExecuteNonQuery method for Delete
-    /// </summary>
-    public void DeleteData()
+    public void getCurrentAdresse()
     {
+        SqlDataReader rdr = null;
+        string selectAdresseString = @"SELECT Adresse.* 
+                                        FROM Person INNER JOIN 
+                                        Adresse ON Person.AdresseID = Adresse.AdresseID
+                                        WHERE (Person.AdresseID = @Data1)";
+
         try
         {
-            // Open the connection
             conn.Open();
 
-            // prepare command string
-            string deleteString = @"
-                 DELETE FROM Person
-                 WHERE Person.Fornavn = 'Jebbe'
-                 AND Person.Efternavn = 'Stærk'";
+            using (SqlCommand cmd = new SqlCommand(selectAdresseString, conn))
+            {
+                cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data1";
+                cmd.Parameters["@Data1"].Value = this.locPerson.AdresseId;
 
-            // 1. Instantiate a new command
-            SqlCommand cmd = new SqlCommand();
+                rdr = cmd.ExecuteReader();
 
-            // 2. Set the CommandText property
-            cmd.CommandText = deleteString;
+                locPerson.FolkeregisterAdresse = new Adresse();
+                Adresse locAdresse = null;
 
-            // 3. Set the Connection property
-            cmd.Connection = conn;
+                while (rdr.Read())
+                {
+                    Console.WriteLine($"Adresse: {rdr["Vejnavn"]} {rdr["Husnummer"]}, {rdr["Postnummer"]} {rdr["Bynavn"]}");
+                    locAdresse = new Adresse();
+                    locAdresse.AdresseId = (long) rdr["AdresseID"];
+                    locAdresse.Vejnavn = (string) rdr["Vejnavn"];
+                    locAdresse.Husnummer = (string) rdr["Husnummer"];
+                    locAdresse.Postnummer = (string) rdr["Postnummer"];
+                    locAdresse.Bynavn = (string) rdr["Bynavn"];
+                    break;
+                }
+            }
 
-            // 4. Call ExecuteNonQuery to send command
-            cmd.ExecuteNonQuery();
         }
         finally
         {
-            // Close the connection
+            if (rdr != null)
+            {
+                rdr.Close();
+            }
+
             if (conn != null)
             {
                 conn.Close();
@@ -176,28 +198,121 @@ public class SqlCommandDemo
         }
     }
 
-    /// <summary>
-    /// use ExecuteScalar method
-    /// </summary>
-    /// <returns>number of records</returns>
+    public void InsertNewPerson(Person person)
+    {
+        try
+        {
+            conn.Open();
+
+            string insertString = @"INSERT INTO Person(Fornavn, Mellemnavn, Efternavn, PersonType, AdresseID)
+                                                    OUTPUT INSERTED.PersonID  
+                                                    VALUES (@Data1, @Data2, @Data3, @Data4, @Data5)";
+
+            using (SqlCommand cmd = new SqlCommand(insertString, conn))
+            {
+                cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data1";
+                cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data2";
+                cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data3";
+                cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data4";
+                cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data5";
+                cmd.Parameters["@Data1"].Value = person.Fornavn;
+                cmd.Parameters["@Data2"].Value = person.Mellemnavn;
+                cmd.Parameters["@Data3"].Value = person.Efternavn;
+                cmd.Parameters["@Data4"].Value = person.PersonType;
+                cmd.Parameters["@Data5"].Value = person.AdresseId;
+
+                person.PersonId = (long)cmd.ExecuteScalar();
+
+                this.locPerson = person;
+            }
+        }
+        finally
+        {
+            if (conn != null)
+            {
+                conn.Close();
+            }
+        }
+    }
+
+    public void UpdateCurrentPerson()
+    {
+        try
+        {
+            conn.Open();
+
+            string updateString = @"UPDATE Person
+                                    SET Fornavn = @Data1, Mellemnavn = @Data2, Efternavn = @Data3, PersonType = @Data4
+                                    WHERE Person.PersonID = @Data5";
+
+            using (SqlCommand cmd = new SqlCommand(updateString, conn))
+            {
+                cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data1";
+                cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data2";
+                cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data3";
+                cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data4";
+                cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data5";
+
+                cmd.Parameters["@Data1"].Value = this.locPerson.Fornavn;
+                cmd.Parameters["@Data2"].Value = this.locPerson.Mellemnavn;
+                cmd.Parameters["@Data3"].Value = this.locPerson.Efternavn;
+                cmd.Parameters["@Data4"].Value = this.locPerson.PersonType;
+                cmd.Parameters["@Data5"].Value = this.locPerson.PersonId;
+
+                var id = (int) cmd.ExecuteNonQuery();
+            }
+        }
+        finally
+        {
+            if (conn != null)
+            {
+                conn.Close();
+            }
+        }
+    }
+
+    public void DeleteCurrentPerson()
+    {
+        try
+        {
+            conn.Open();
+
+            string deleteString = @"DELETE FROM Person
+                                    WHERE Person.PersonID = @Data1";
+
+            using (SqlCommand cmd = new SqlCommand(deleteString, conn))
+            {
+                cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data1";
+
+                cmd.Parameters["@Data1"].Value = this.locPerson.PersonId;
+
+                var id = (int)cmd.ExecuteNonQuery();
+                locPerson = null;
+            }
+        }
+        finally
+        {
+            if (conn != null)
+            {
+                conn.Close();
+            }
+        }
+    }
+
     public int GetNumberOfRecords()
     {
         int count = -1;
 
         try
         {
-            // Open the connection
             conn.Open();
 
-            // 1. Instantiate a new command
             SqlCommand cmd = new SqlCommand("SELECT count(*) FROM Person", conn);
 
-            // 2. Call ExecuteScalar to send command
             count = (int)cmd.ExecuteScalar();
         }
         finally
         {
-            // Close the connection
             if (conn != null)
             {
                 conn.Close();
