@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HandIn3TestApplication
 {
     class HandIn3TestApplication
     {
-        private static string hest = "Helle";
-
         // call methods that demo SqlCommand capabilities
         static void Main()
         {
