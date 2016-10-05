@@ -1,4 +1,5 @@
-﻿using HandIn3DataAccess.DataModel;
+﻿using HandIn3.DataAccess;
+using HandIn3.DataModel;
 
 namespace HandIn3TestApplication
 {
