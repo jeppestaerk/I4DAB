@@ -288,6 +288,7 @@ namespace HandIn3.DataAccess
                     cmd.Parameters["@Data4"].Value = adresse.Bynavn;
 
                     adresse.AdresseId = (long) cmd.ExecuteScalar();
+                    
                 }
 
                 string updateString = @"UPDATE Person
@@ -303,6 +304,8 @@ namespace HandIn3.DataAccess
                     cmd.Parameters["@Data2"].Value = _locPerson.PersonId;
 
                     var id = cmd.ExecuteNonQuery();
+
+                    _locPerson.FolkeregisterAdresse.AdresseId = adresse.AdresseId;
                 }
             }
             finally
@@ -352,6 +355,42 @@ namespace HandIn3.DataAccess
             }
         }
 
+        public void UpdateCurrentAdresse()
+        {
+            try
+            {
+                _conn.Open();
+
+                string updateString = @"UPDATE Adresse
+                                    SET Vejnavn = @Data1, Husnummer = @Data2, Postnummer = @Data3, Bynavn = @Data4
+                                    WHERE Adresse.AdresseID = @Data5";
+
+                using (SqlCommand cmd = new SqlCommand(updateString, _conn))
+                {
+                    cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data1";
+                    cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data2";
+                    cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data3";
+                    cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data4";
+                    cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data5";
+
+                    cmd.Parameters["@Data1"].Value = _locPerson.FolkeregisterAdresse.Vejnavn;
+                    cmd.Parameters["@Data2"].Value = _locPerson.FolkeregisterAdresse.Husnummer;
+                    cmd.Parameters["@Data3"].Value = _locPerson.FolkeregisterAdresse.Postnummer;
+                    cmd.Parameters["@Data4"].Value = _locPerson.FolkeregisterAdresse.Bynavn;
+                    cmd.Parameters["@Data5"].Value = _locPerson.FolkeregisterAdresse.AdresseId;
+
+                    var id = cmd.ExecuteNonQuery();
+                }
+            }
+            finally
+            {
+                if (_conn != null)
+                {
+                    _conn.Close();
+                }
+            }
+        }
+
         public void DeleteCurrentPerson()
         {
             try
@@ -369,6 +408,226 @@ namespace HandIn3.DataAccess
 
                     var id = cmd.ExecuteNonQuery();
                     _locPerson = null;
+                }
+            }
+            finally
+            {
+                if (_conn != null)
+                {
+                    _conn.Close();
+                }
+            }
+        }
+
+        public void DeletePerson(string fornavn, string efternavn)
+        {
+            try
+            {
+                _conn.Open();
+
+                string deleteString = @"DELETE FROM Person
+                                    WHERE Person.Fornavn = @Data1 AND Person.Efternavn = @Data2";
+
+                using (SqlCommand cmd = new SqlCommand(deleteString, _conn))
+                {
+                    cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data1";
+                    cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data2";
+
+                    cmd.Parameters["@Data1"].Value = fornavn;
+                    cmd.Parameters["@Data2"].Value = efternavn;
+
+                    var id = cmd.ExecuteNonQuery();
+                }
+            }
+            finally
+            {
+                if (_conn != null)
+                {
+                    _conn.Close();
+                }
+            }
+        }
+
+        public void DeletePerson(long personId)
+        {
+            try
+            {
+                _conn.Open();
+
+                string deleteString = @"DELETE FROM Person
+                                    WHERE Person.PersonID = @Data1";
+
+                using (SqlCommand cmd = new SqlCommand(deleteString, _conn))
+                {
+                    cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data1";
+
+                    cmd.Parameters["@Data1"].Value = personId;
+
+                    var id = cmd.ExecuteNonQuery();
+                }
+            }
+            finally
+            {
+                if (_conn != null)
+                {
+                    _conn.Close();
+                }
+            }
+        }
+        public void DeleteCurrentAdresse()
+        {
+            try
+            {
+                _conn.Open();
+
+                string deleteString = @"DELETE FROM Adresse
+                                    WHERE Adresse.AdresseID = @Data1";
+
+                using (SqlCommand cmd = new SqlCommand(deleteString, _conn))
+                {
+                    cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data1";
+
+                    cmd.Parameters["@Data1"].Value = _locPerson.FolkeregisterAdresse.AdresseId;
+
+                    var id = cmd.ExecuteNonQuery();
+
+                    _locPerson.FolkeregisterAdresse = null;
+                }
+            }
+            finally
+            {
+                if (_conn != null)
+                {
+                    _conn.Close();
+                }
+            }
+        }
+
+        public void DeleteAdresse(string vejnavn, string husnummer)
+        {
+            try
+            {
+                _conn.Open();
+
+                string deleteString = @"DELETE FROM Adresse
+                                    WHERE Adresse.Vejnavn = @Data1 AND Adresse.Husnummer = @Data2";
+
+                using (SqlCommand cmd = new SqlCommand(deleteString, _conn))
+                {
+                    cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data1";
+                    cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data2";
+
+                    cmd.Parameters["@Data1"].Value = vejnavn;
+                    cmd.Parameters["@Data2"].Value = husnummer;
+
+                    var id = cmd.ExecuteNonQuery();
+                }
+            }
+            finally
+            {
+                if (_conn != null)
+                {
+                    _conn.Close();
+                }
+            }
+        }
+
+        public void DeleteAdresse(long adresseId)
+        {
+            try
+            {
+                _conn.Open();
+
+                string deleteString = @"DELETE FROM Adresse
+                                    WHERE Adresse.AdresseID = @Data1";
+
+                using (SqlCommand cmd = new SqlCommand(deleteString, _conn))
+                {
+                    cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data1";
+
+                    cmd.Parameters["@Data1"].Value = adresseId;
+
+                    var id = cmd.ExecuteNonQuery();
+                }
+            }
+            finally
+            {
+                if (_conn != null)
+                {
+                    _conn.Close();
+                }
+            }
+        }
+        public void DeleteCurrentTelefon()
+        {
+            try
+            {
+                _conn.Open();
+
+                string deleteString = @"DELETE FROM Telefon
+                                    WHERE Telefon.PersonID = @Data1";
+
+                using (SqlCommand cmd = new SqlCommand(deleteString, _conn))
+                {
+                    cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data1";
+
+                    cmd.Parameters["@Data1"].Value = _locPerson.PersonId;
+
+                    var id = cmd.ExecuteNonQuery();
+                }
+            }
+            finally
+            {
+                if (_conn != null)
+                {
+                    _conn.Close();
+                }
+            }
+        }
+
+        public void DeleteTelefon(string telefonnummer)
+        {
+            try
+            {
+                _conn.Open();
+
+                string deleteString = @"DELETE FROM Telefon
+                                    WHERE Telefon.Telefonnummer = @Data1";
+
+                using (SqlCommand cmd = new SqlCommand(deleteString, _conn))
+                {
+                    cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data1";
+
+                    cmd.Parameters["@Data1"].Value = telefonnummer;
+
+                    var id = cmd.ExecuteNonQuery();
+                }
+            }
+            finally
+            {
+                if (_conn != null)
+                {
+                    _conn.Close();
+                }
+            }
+        }
+
+        public void DeleteTelefon(long telefonId)
+        {
+            try
+            {
+                _conn.Open();
+
+                string deleteString = @"DELETE FROM Telefon
+                                    WHERE Telefon.TelefonID = @Data1";
+
+                using (SqlCommand cmd = new SqlCommand(deleteString, _conn))
+                {
+                    cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data1";
+
+                    cmd.Parameters["@Data1"].Value = telefonId;
+
+                    var id = cmd.ExecuteNonQuery();
                 }
             }
             finally
