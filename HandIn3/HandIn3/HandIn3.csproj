@@ -7,8 +7,8 @@
     <ProjectGuid>{D48F7AD3-587E-4617-A862-6C3C7F743519}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HandIn3DataAccess</RootNamespace>
-    <AssemblyName>HandIn3DataAccess</AssemblyName>
+    <RootNamespace>HandIn3</RootNamespace>
+    <AssemblyName>HandIn3</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
