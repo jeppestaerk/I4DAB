@@ -1,4 +1,6 @@
-﻿namespace HandIn3.DataModel
+﻿using System.Collections.Generic;
+
+namespace HandIn3.DataModel
 {
     public class Adresse
     {

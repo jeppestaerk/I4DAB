@@ -7,41 +7,41 @@ namespace HandIn3.DataAccess
 {
     public class PersonkartotekDataUtil
     {
-        private Person locPerson;
-        SqlConnection conn;
+        private Person _locPerson;
+        SqlConnection _conn;
 
-        public Person currentPerson
+        public Person CurrentPerson
         {
-            get { return locPerson; }
+            get { return _locPerson; }
         }
 
         public PersonkartotekDataUtil()
         {
-            conn = new SqlConnection(@"Data Source=JEPPESTAERK\SQLEXPRESS;Initial Catalog='I4DAB HandIn2';Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=True");
+            _conn = new SqlConnection(@"Data Source=JEPPESTAERK\SQLEXPRESS;Initial Catalog='I4DAB HandIn2';Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=True");
         }
 
-        public void setCurrentPerson(string fornavn, string efternavn)
+        public void SetCurrentPerson(string fornavn, string efternavn)
         {
             SqlDataReader rdr = null;
 
             try
             {
-                conn.Open();
+                _conn.Open();
 
-                SqlCommand cmd = new SqlCommand($"SELECT * FROM Person WHERE Fornavn = '{fornavn}' AND Efternavn = '{efternavn}'", conn);
+                SqlCommand cmd = new SqlCommand($"SELECT * FROM Person WHERE Fornavn = '{fornavn}' AND Efternavn = '{efternavn}'", _conn);
 
                 rdr = cmd.ExecuteReader();
 
                 while (rdr.Read())
                 {
                     Console.WriteLine($"Navn: {rdr["Fornavn"]} {rdr["Mellemnavn"]} {rdr["Efternavn"]}");
-                    locPerson = new Person();
-                    locPerson.PersonId = (long) rdr["PersonID"];
-                    locPerson.Fornavn = (string) rdr["Fornavn"];
-                    locPerson.Mellemnavn = (string) rdr["Mellemnavn"];
-                    locPerson.Efternavn = (string) rdr["Efternavn"];
-                    locPerson.PersonType = (string) rdr["PersonType"];
-                    locPerson.AdresseId = (long)rdr["AdresseID"];
+                    _locPerson = new Person();
+                    _locPerson.PersonId = (long) rdr["PersonID"];
+                    _locPerson.Fornavn = (string) rdr["Fornavn"];
+                    _locPerson.Mellemnavn = (string) rdr["Mellemnavn"];
+                    _locPerson.Efternavn = (string) rdr["Efternavn"];
+                    _locPerson.PersonType = (string) rdr["PersonType"];
+                    _locPerson.FolkeregisterAdresse.AdresseId = (long)rdr["AdresseID"];
                     break;
 
                 }
@@ -53,35 +53,35 @@ namespace HandIn3.DataAccess
                     rdr.Close();
                 }
 
-                if (conn != null)
+                if (_conn != null)
                 {
-                    conn.Close();
+                    _conn.Close();
                 }
             }
         }
 
-        public void setCurrentPerson(long id)
+        public void SetCurrentPerson(long id)
         {
             SqlDataReader rdr = null;
 
             try
             {
-                conn.Open();
+                _conn.Open();
 
-                SqlCommand cmd = new SqlCommand($"SELECT * FROM Person WHERE PersonID = '{id}'", conn);
+                SqlCommand cmd = new SqlCommand($"SELECT * FROM Person WHERE PersonID = '{id}'", _conn);
 
                 rdr = cmd.ExecuteReader();
 
                 while (rdr.Read())
                 {
                     Console.WriteLine($"Navn: {rdr["Fornavn"]} {rdr["Mellemnavn"]} {rdr["Efternavn"]}");
-                    locPerson = new Person();
-                    locPerson.PersonId = (long) rdr["PersonID"];
-                    locPerson.Fornavn = (string) rdr["Fornavn"];
-                    locPerson.Mellemnavn = (string) rdr["Mellemnavn"];
-                    locPerson.Efternavn = (string) rdr["Efternavn"];
-                    locPerson.PersonType = (string) rdr["PersonType"];
-                    locPerson.AdresseId = (long) rdr["AdresseID"];
+                    _locPerson = new Person();
+                    _locPerson.PersonId = (long) rdr["PersonID"];
+                    _locPerson.Fornavn = (string) rdr["Fornavn"];
+                    _locPerson.Mellemnavn = (string) rdr["Mellemnavn"];
+                    _locPerson.Efternavn = (string) rdr["Efternavn"];
+                    _locPerson.PersonType = (string) rdr["PersonType"];
+                    _locPerson.FolkeregisterAdresse.AdresseId = (long) rdr["AdresseID"];
                     break;
 
                 }
@@ -93,14 +93,14 @@ namespace HandIn3.DataAccess
                     rdr.Close();
                 }
 
-                if (conn != null)
+                if (_conn != null)
                 {
-                    conn.Close();
+                    _conn.Close();
                 }
             }
         }
 
-        public void getCurrentTelefon()
+        public void GetCurrentTelefon()
         {
             SqlDataReader rdr = null;
             string selectTelefonString = @"SELECT Telefon.* 
@@ -110,17 +110,17 @@ namespace HandIn3.DataAccess
 
             try
             {
-                conn.Open();
+                _conn.Open();
 
-                using (SqlCommand cmd = new SqlCommand(selectTelefonString, conn))
+                using (SqlCommand cmd = new SqlCommand(selectTelefonString, _conn))
                 {
                     cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data1";
-                    cmd.Parameters["@Data1"].Value = this.locPerson.PersonId;
+                    cmd.Parameters["@Data1"].Value = _locPerson.PersonId;
 
                     rdr = cmd.ExecuteReader();
 
-                    locPerson.Ejer = new List<Telefon>();
-                    Telefon locTelefon = null;
+                    _locPerson.Telefon = new List<Telefon>();
+                    Telefon locTelefon;
 
                     while (rdr.Read())
                     {
@@ -129,7 +129,7 @@ namespace HandIn3.DataAccess
                         locTelefon.TelefonId = (long) rdr["TelefonID"];
                         locTelefon.Telefonnummer = (string) rdr["Telefonnummer"];
                         locTelefon.TelefonType = (string) rdr["TelefonType"];
-                        locPerson.Ejer.Add(locTelefon);
+                        _locPerson.Telefon.Add(locTelefon);
                     }
                 }
 
@@ -141,14 +141,14 @@ namespace HandIn3.DataAccess
                     rdr.Close();
                 }
 
-                if (conn != null)
+                if (_conn != null)
                 {
-                    conn.Close();
+                    _conn.Close();
                 }
             }
         }
 
-        public void getCurrentAdresse()
+        public void GetCurrentAdresse()
         {
             SqlDataReader rdr = null;
             string selectAdresseString = @"SELECT Adresse.* 
@@ -158,17 +158,17 @@ namespace HandIn3.DataAccess
 
             try
             {
-                conn.Open();
+                _conn.Open();
 
-                using (SqlCommand cmd = new SqlCommand(selectAdresseString, conn))
+                using (SqlCommand cmd = new SqlCommand(selectAdresseString, _conn))
                 {
                     cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data1";
-                    cmd.Parameters["@Data1"].Value = this.locPerson.AdresseId;
+                    cmd.Parameters["@Data1"].Value = _locPerson.FolkeregisterAdresse.AdresseId;
 
                     rdr = cmd.ExecuteReader();
 
-                    locPerson.FolkeregisterAdresse = new Adresse();
-                    Adresse locAdresse = null;
+                    _locPerson.FolkeregisterAdresse = new Adresse();
+                    Adresse locAdresse;
 
                     while (rdr.Read())
                     {
@@ -179,6 +179,7 @@ namespace HandIn3.DataAccess
                         locAdresse.Husnummer = (string) rdr["Husnummer"];
                         locAdresse.Postnummer = (string) rdr["Postnummer"];
                         locAdresse.Bynavn = (string) rdr["Bynavn"];
+                        _locPerson.FolkeregisterAdresse = locAdresse;
                         break;
                     }
                 }
@@ -191,9 +192,9 @@ namespace HandIn3.DataAccess
                     rdr.Close();
                 }
 
-                if (conn != null)
+                if (_conn != null)
                 {
-                    conn.Close();
+                    _conn.Close();
                 }
             }
         }
@@ -202,68 +203,64 @@ namespace HandIn3.DataAccess
         {
             try
             {
-                conn.Open();
+                _conn.Open();
 
-                string insertString = @"INSERT INTO Person(Fornavn, Mellemnavn, Efternavn, PersonType, AdresseID)
+                string insertString = @"INSERT INTO Person(Fornavn, Mellemnavn, Efternavn, PersonType)
                                                     OUTPUT INSERTED.PersonID  
-                                                    VALUES (@Data1, @Data2, @Data3, @Data4, @Data5)";
+                                                    VALUES (@Data1, @Data2, @Data3, @Data4)";
 
-                using (SqlCommand cmd = new SqlCommand(insertString, conn))
+                using (SqlCommand cmd = new SqlCommand(insertString, _conn))
                 {
                     cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data1";
                     cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data2";
                     cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data3";
                     cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data4";
-                    cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data5";
                     cmd.Parameters["@Data1"].Value = person.Fornavn;
                     cmd.Parameters["@Data2"].Value = person.Mellemnavn;
                     cmd.Parameters["@Data3"].Value = person.Efternavn;
                     cmd.Parameters["@Data4"].Value = person.PersonType;
-                    cmd.Parameters["@Data5"].Value = person.AdresseId;
 
                     person.PersonId = (long)cmd.ExecuteScalar();
 
-                    this.locPerson = person;
+                    _locPerson = person;
                 }
             }
             finally
             {
-                if (conn != null)
+                if (_conn != null)
                 {
-                    conn.Close();
+                    _conn.Close();
                 }
             }
         }
 
-        public void InsertNewPTelefon(Telefon telefon)
+        public void InsertNewTelefon(Telefon telefon)
         {
             try
             {
-                conn.Open();
+                _conn.Open();
 
                 string insertString = @"INSERT INTO Telefon(Telefonnummer, TelefonType, PersonID)
                                                     OUTPUT INSERTED.TelefonID  
                                                     VALUES (@Data1, @Data2, @Data3)";
 
-                using (SqlCommand cmd = new SqlCommand(insertString, conn))
+                using (SqlCommand cmd = new SqlCommand(insertString, _conn))
                 {
                     cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data1";
                     cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data2";
                     cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data3";
                     cmd.Parameters["@Data1"].Value = telefon.Telefonnummer;
                     cmd.Parameters["@Data2"].Value = telefon.TelefonType;
-                    cmd.Parameters["@Data3"].Value = telefon.PersonId;
+                    cmd.Parameters["@Data3"].Value = _locPerson.PersonId;
 
                     telefon.TelefonId = (long)cmd.ExecuteScalar();
-
-                    locPerson.Ejer.Add(telefon);
                 }
             }
             finally
             {
-                if (conn != null)
+                if (_conn != null)
                 {
-                    conn.Close();
+                    _conn.Close();
                 }
             }
         }
@@ -272,13 +269,14 @@ namespace HandIn3.DataAccess
         {
             try
             {
-                conn.Open();
+                _conn.Open();
 
                 string insertString = @"INSERT INTO Adresse(Vejnavn,Husnummer,Postnummer,Bynavn)
                                                     OUTPUT INSERTED.AdresseID  
                                                     VALUES (@Data1, @Data2, @Data3, @Data4)";
+                _locPerson.FolkeregisterAdresse = new Adresse();
 
-                using (SqlCommand cmd = new SqlCommand(insertString, conn))
+                using (SqlCommand cmd = new SqlCommand(insertString, _conn))
                 {
                     cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data1";
                     cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data2";
@@ -289,16 +287,29 @@ namespace HandIn3.DataAccess
                     cmd.Parameters["@Data3"].Value = adresse.Postnummer;
                     cmd.Parameters["@Data4"].Value = adresse.Bynavn;
 
-                    adresse.AdresseId = (long)cmd.ExecuteScalar();
+                    adresse.AdresseId = (long) cmd.ExecuteScalar();
+                }
 
-                    this.locPerson.AdresseId = adresse.AdresseId;
+                string updateString = @"UPDATE Person
+                                    SET AdresseID = @Data1
+                                    WHERE Person.PersonID = @Data2";
+
+                using (SqlCommand cmd = new SqlCommand(updateString, _conn))
+                {
+                    cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data1";
+                    cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data2";
+
+                    cmd.Parameters["@Data1"].Value = adresse.AdresseId;
+                    cmd.Parameters["@Data2"].Value = _locPerson.PersonId;
+
+                    var id = cmd.ExecuteNonQuery();
                 }
             }
             finally
             {
-                if (conn != null)
+                if (_conn != null)
                 {
-                    conn.Close();
+                    _conn.Close();
                 }
             }
         }
@@ -307,34 +318,36 @@ namespace HandIn3.DataAccess
         {
             try
             {
-                conn.Open();
+                _conn.Open();
 
                 string updateString = @"UPDATE Person
-                                    SET Fornavn = @Data1, Mellemnavn = @Data2, Efternavn = @Data3, PersonType = @Data4
-                                    WHERE Person.PersonID = @Data5";
+                                    SET Fornavn = @Data1, Mellemnavn = @Data2, Efternavn = @Data3, PersonType = @Data4, AdresseID = @Data5
+                                    WHERE Person.PersonID = @Data6";
 
-                using (SqlCommand cmd = new SqlCommand(updateString, conn))
+                using (SqlCommand cmd = new SqlCommand(updateString, _conn))
                 {
                     cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data1";
                     cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data2";
                     cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data3";
                     cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data4";
                     cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data5";
+                    cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data6";
 
-                    cmd.Parameters["@Data1"].Value = this.locPerson.Fornavn;
-                    cmd.Parameters["@Data2"].Value = this.locPerson.Mellemnavn;
-                    cmd.Parameters["@Data3"].Value = this.locPerson.Efternavn;
-                    cmd.Parameters["@Data4"].Value = this.locPerson.PersonType;
-                    cmd.Parameters["@Data5"].Value = this.locPerson.PersonId;
+                    cmd.Parameters["@Data1"].Value = _locPerson.Fornavn;
+                    cmd.Parameters["@Data2"].Value = _locPerson.Mellemnavn;
+                    cmd.Parameters["@Data3"].Value = _locPerson.Efternavn;
+                    cmd.Parameters["@Data4"].Value = _locPerson.PersonType;
+                    cmd.Parameters["@Data5"].Value = _locPerson.FolkeregisterAdresse.AdresseId;
+                    cmd.Parameters["@Data6"].Value = _locPerson.PersonId;
 
-                    var id = (int) cmd.ExecuteNonQuery();
+                    var id = cmd.ExecuteNonQuery();
                 }
             }
             finally
             {
-                if (conn != null)
+                if (_conn != null)
                 {
-                    conn.Close();
+                    _conn.Close();
                 }
             }
         }
@@ -343,26 +356,26 @@ namespace HandIn3.DataAccess
         {
             try
             {
-                conn.Open();
+                _conn.Open();
 
                 string deleteString = @"DELETE FROM Person
                                     WHERE Person.PersonID = @Data1";
 
-                using (SqlCommand cmd = new SqlCommand(deleteString, conn))
+                using (SqlCommand cmd = new SqlCommand(deleteString, _conn))
                 {
                     cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data1";
 
-                    cmd.Parameters["@Data1"].Value = this.locPerson.PersonId;
+                    cmd.Parameters["@Data1"].Value = _locPerson.PersonId;
 
-                    var id = (int)cmd.ExecuteNonQuery();
-                    locPerson = null;
+                    var id = cmd.ExecuteNonQuery();
+                    _locPerson = null;
                 }
             }
             finally
             {
-                if (conn != null)
+                if (_conn != null)
                 {
-                    conn.Close();
+                    _conn.Close();
                 }
             }
         }
@@ -373,20 +386,144 @@ namespace HandIn3.DataAccess
 
             try
             {
-                conn.Open();
+                _conn.Open();
 
-                SqlCommand cmd = new SqlCommand("SELECT count(*) FROM Person", conn);
+                SqlCommand cmd = new SqlCommand("SELECT count(*) FROM Person", _conn);
 
                 count = (int)cmd.ExecuteScalar();
             }
             finally
             {
-                if (conn != null)
+                if (_conn != null)
                 {
-                    conn.Close();
+                    _conn.Close();
                 }
             }
             return count;
+        }
+
+        public void PrintAllPerson()
+        {
+            SqlDataReader rdr = null;
+
+            try
+            {
+                _conn.Open();
+
+                SqlCommand cmd = new SqlCommand($"SELECT * FROM Person", _conn);
+
+                rdr = cmd.ExecuteReader();
+
+                string title = "PERSONER";
+                Console.Write("".PadLeft(24, '*'));
+                Console.Write("".PadLeft(1));
+                Console.Write(String.Format("{0,-" + ((10 / 2) + (title.Length / 2)) + "}", title));
+                Console.Write("".PadRight(1));
+                Console.WriteLine("".PadRight(24, '*'));
+
+                Console.WriteLine("{0,-5}{1,-15}{2,-15}{3,-15}{4,-10}", "ID", "Fornavn", "Mellemnavn", "Efternavn", "AdresseID");
+                Console.WriteLine(("").PadLeft(60, '-'));
+
+                while (rdr.Read())
+                {
+                    Console.WriteLine($"{rdr["PersonID"],-5:D3}{rdr["Fornavn"], -15}{rdr["Mellemnavn"], -15}{rdr["Efternavn"], -15}{rdr["AdresseID"],-10:D3}");
+                }
+                Console.WriteLine();
+            }
+            finally
+            {
+                if (rdr != null)
+                {
+                    rdr.Close();
+                }
+
+                if (_conn != null)
+                {
+                    _conn.Close();
+                }
+            }
+        }
+
+        public void PrintAllTelefon()
+        {
+            SqlDataReader rdr = null;
+
+            try
+            {
+                _conn.Open();
+
+                SqlCommand cmd = new SqlCommand($"SELECT * FROM Telefon", _conn);
+
+                rdr = cmd.ExecuteReader();
+
+                string title = "TELEFONER";
+                Console.Write("".PadLeft(24, '*'));
+                Console.Write("".PadLeft(1));
+                Console.Write(String.Format("{0,-" + ((10 / 2) + (title.Length / 2)) + "}", title));
+                Console.Write("".PadRight(1));
+                Console.WriteLine("".PadRight(24, '*'));
+
+                Console.WriteLine("{0,-5}{1,-15}{2,-15}{3,-10}", "ID", "Telefonr", "Type", "PersonID");
+                Console.WriteLine(("").PadLeft(60, '-'));
+                while (rdr.Read())
+                {
+                    Console.WriteLine($"{rdr["TelefonID"],-5:D3}{rdr["Telefonnummer"],-15}{rdr["TelefonType"],-15}{rdr["PersonID"],-10:D3}");
+                }
+                Console.WriteLine();
+            }
+            finally
+            {
+                if (rdr != null)
+                {
+                    rdr.Close();
+                }
+
+                if (_conn != null)
+                {
+                    _conn.Close();
+                }
+            }
+        }
+
+        public void PrintAllPAdresser()
+        {
+            SqlDataReader rdr = null;
+
+            try
+            {
+                _conn.Open();
+
+                SqlCommand cmd = new SqlCommand($"SELECT * FROM Adresse", _conn);
+
+                rdr = cmd.ExecuteReader();
+
+                string title = "ADRESSER";
+                Console.Write("".PadLeft(24, '*'));
+                Console.Write("".PadLeft(1));
+                Console.Write(String.Format("{0,-" + ((10/2) + (title.Length / 2)) + "}", title));
+                Console.Write("".PadRight(1));
+                Console.WriteLine("".PadRight(24, '*'));
+
+                Console.WriteLine("{0,-5}{1,-25}{2,-10}{3,-10}{4,-15}", "ID", "Vejnavn", "Husnr", "Postnr", "By");
+                Console.WriteLine(("").PadLeft(60, '-'));
+                while (rdr.Read())
+                {
+                    Console.WriteLine($"{rdr["AdresseID"],-5:D3}{rdr["Vejnavn"],-25}{rdr["Husnummer"],-10}{rdr["Postnummer"],-10}{rdr["Bynavn"],-15}");
+                }
+                Console.WriteLine();
+            }
+            finally
+            {
+                if (rdr != null)
+                {
+                    rdr.Close();
+                }
+
+                if (_conn != null)
+                {
+                    _conn.Close();
+                }
+            }
         }
     }
 }

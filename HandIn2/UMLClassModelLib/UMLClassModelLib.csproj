@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{276832C1-340B-4921-9C47-829CE1655F2F}</ProjectGuid>
+    <ProjectGuid>{33296010-A163-4C7D-8AAD-3D178FD326FF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HandIn3</RootNamespace>
-    <AssemblyName>HandIn3</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <RootNamespace>UMLClassModelLib</RootNamespace>
+    <AssemblyName>UMLClassModelLib</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -40,11 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAccess\SQLConnection.cs" />
-    <Compile Include="DataModel\Adresse.cs" />
-    <Compile Include="DataModel\AdresseAlternativ.cs" />
-    <Compile Include="DataModel\Person.cs" />
-    <Compile Include="DataModel\Telefon.cs" />
+    <Compile Include="GeneratedCode\Personkartotek\Adresse.cs" />
+    <Compile Include="GeneratedCode\Personkartotek\AdresseAlternativ.cs" />
+    <Compile Include="GeneratedCode\Personkartotek\Person.cs" />
+    <Compile Include="GeneratedCode\Personkartotek\Telefon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

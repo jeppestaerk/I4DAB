@@ -9,9 +9,7 @@ namespace HandIn3.DataModel
         public string Mellemnavn { get; set; }
         public string Efternavn { get; set; }
         public string PersonType { get; set; }
-        public long AdresseId { get; set; }
         public Adresse FolkeregisterAdresse { get; set; }
-        public List<Telefon> Ejer { get; set; }
-        
+        public List<Telefon> Telefon { get; set; }        
     }
 }
