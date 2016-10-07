@@ -54,9 +54,9 @@ namespace HandIn3TestApplication
 
             Person n2Person = new Person()
             {
-                Fornavn = "Hr.",
+                Fornavn = "Lars",
                 Mellemnavn = "",
-                Efternavn = "Overchef",
+                Efternavn = "Hjerrild",
                 PersonType = "CEO",
                 FolkeregisterAdresse = n1Adresse
             };
@@ -83,7 +83,7 @@ namespace HandIn3TestApplication
             personkartotek.InsertNewAdresse(n1Adresse);
             personkartotek.InsertNewTelefon(n1Telefon1);
             personkartotek.InsertNewTelefon(n1Telefon2);
-
+            
             Console.WriteLine(@"/// Person n1 indsat \\\");
             personkartotek.PrintAllPerson();
             personkartotek.PrintAllTelefon();
@@ -123,7 +123,7 @@ namespace HandIn3TestApplication
             personkartotek.PrintAllTelefon();
             personkartotek.PrintAllPAdresser();
 
-            personkartotek.DeletePerson("Hr.", "Overchef");
+            personkartotek.DeletePerson("Lars", "Hjerrild");
             personkartotek.DeleteAdresse("Park Alle", "1");
 
             personkartotek.PrintAllPerson();
