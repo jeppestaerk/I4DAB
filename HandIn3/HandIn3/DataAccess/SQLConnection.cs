@@ -254,6 +254,8 @@ namespace HandIn3.DataAccess
                     cmd.Parameters["@Data3"].Value = _locPerson.PersonId;
 
                     telefon.TelefonId = (long)cmd.ExecuteScalar();
+
+                    _locPerson.Telefon.Add(telefon);
                 }
             }
             finally

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using HandIn3.DataAccess;
 using HandIn3.DataModel;
 
@@ -29,7 +30,10 @@ namespace HandIn3TestApplication
                 Mellemnavn = "",
                 Efternavn = "Stærk",
                 PersonType = "Chef",
-                FolkeregisterAdresse = n1Adresse
+                FolkeregisterAdresse = n1Adresse,
+                AlternativAdresse = new List<Adresse>(),
+                Telefon = new List<Telefon>()
+
             };
             Telefon n1Telefon1 = new Telefon()
             {
@@ -58,7 +62,9 @@ namespace HandIn3TestApplication
                 Mellemnavn = "",
                 Efternavn = "Hjerrild",
                 PersonType = "CEO",
-                FolkeregisterAdresse = n1Adresse
+                FolkeregisterAdresse = n2Adresse,
+                AlternativAdresse = new List<Adresse>(),
+                Telefon = new List<Telefon>()
             };
             Telefon n2Telefon1 = new Telefon()
             {

@@ -9,5 +9,6 @@ namespace HandIn3.DataModel
     public class AdresseAlternativ
     {
         public string AdresseType { get; set; }
+        public string AdresseID { get; set; }
     }
 }
