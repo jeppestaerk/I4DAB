@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
 using HandIn3.DataAccess;
 using HandIn3.DataModel;
+using System.Collections.Generic;
 
 namespace HandIn3TestApplication
 {
@@ -10,25 +9,18 @@ namespace HandIn3TestApplication
     {
         static void Main()
         {
-            PersonkartotekDataUtil personkartotek = new PersonkartotekDataUtil();
+            KartotekDataUtil personkartotek = new KartotekDataUtil();
 
-            Console.WriteLine(@"/// Pre indhold af database \\\");
+            Console.WriteLine("PRE DATABASE INDHOLD");
             personkartotek.PrintAllPerson();
-            personkartotek.PrintAllTelefon();
             personkartotek.PrintAllPAdresser();
+            personkartotek.PrintAllTelefon();
+            Console.WriteLine();
 
             Adresse n1Adresse = new Adresse()
             {
                 Vejnavn = "Strandvejen",
                 Husnummer = "30B",
-                Postnummer = "8000",
-                Bynavn = "Aarhus C"
-            };
-
-            Adresse n2Adresse = new Adresse()
-            {
-                Vejnavn = "Park Alle",
-                Husnummer = "1",
                 Postnummer = "8000",
                 Bynavn = "Aarhus C"
             };
@@ -42,27 +34,16 @@ namespace HandIn3TestApplication
                 FolkeregisterAdresse = n1Adresse,
                 AlternativAdresse = new List<Adresse>(),
                 Telefon = new List<Telefon>()
-
             };
 
-            Person n2Person = new Person()
-            {
-                Fornavn = "Lars",
-                Mellemnavn = "",
-                Efternavn = "Hjerrild",
-                PersonType = "CEO",
-                FolkeregisterAdresse = n2Adresse,
-                AlternativAdresse = new List<Adresse>(),
-                Telefon = new List<Telefon>()
-            };
-
-            Telefon n1Telefon2 = new Telefon()
+            Telefon n1Telefon = new Telefon()
             {
                 Person = n1Person,
                 Telefonnummer = "61656585",
                 TelefonType = "work"
             };
 
+<<<<<<< HEAD
             Telefon n1Telefon1 = new Telefon()
             {
                 Person = n1Person,
@@ -146,24 +127,40 @@ namespace HandIn3TestApplication
 
             //Console.WriteLine(@"/// Person n1 slettet \\\");
             //Console.WriteLine(@"/// Person n2 indsat \\\");
+=======
+            personkartotek.InsertPersonMedFolkeregisteradresse(n1Person);
+            personkartotek.InsertTelefonTilPerson(n1Telefon);
 
-            //personkartotek.PrintAllPerson();
-            //personkartotek.PrintAllTelefon();
-            //personkartotek.PrintAllPAdresser();
+            Console.WriteLine("PERSON, ADRESSE OG TELEFON INDSAT");
+            personkartotek.PrintAllPerson();
+            personkartotek.PrintAllPAdresser();
+            personkartotek.PrintAllTelefon();
+            Console.WriteLine();
 
-            //personkartotek.DeleteCurrentPerson();
+            n1Person.Mellemnavn = "Stærk";
+            n1Person.Efternavn = "Antonsen";
+>>>>>>> 3e9428e857897f93b658b7a5e5a3c3f15dd3a711
 
-            //Console.WriteLine(@"/// Person n2 slettet \\\");
-            //personkartotek.PrintAllPerson();
-            //personkartotek.PrintAllTelefon();
-            //personkartotek.PrintAllPAdresser();
+            n1Telefon.Telefonnummer = "50403000";
+            n1Telefon.TelefonType = "privat";
 
-            //personkartotek.DeletePerson("Lars", "Hjerrild");
-            //personkartotek.DeleteAdresse("Park Alle", "1");
+            personkartotek.UpdatePerson(n1Person);
+            personkartotek.UpdateTelefon(n1Telefon);
 
-            //personkartotek.PrintAllPerson();
-            //personkartotek.PrintAllTelefon();
-            //personkartotek.PrintAllPAdresser();
+            Console.WriteLine("PERSON OG TELEFON OPDATERET");
+            personkartotek.PrintAllPerson();
+            personkartotek.PrintAllTelefon();
+            Console.WriteLine();
+
+            personkartotek.DeletePerson("Jeppe", "Antonsen");
+            personkartotek.DeleteAdresse("Strandvejen", "30B");
+            personkartotek.DeleteTelefon("50403000");
+
+            Console.WriteLine("PERSON, ADRESSE OG TELEFON SLETTET");
+            personkartotek.PrintAllPerson();
+            personkartotek.PrintAllPAdresser();
+            personkartotek.PrintAllTelefon();
+            Console.WriteLine();
         }
     }
 }

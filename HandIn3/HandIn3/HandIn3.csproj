@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\KartotekDataUtil.cs" />
     <Compile Include="DataAccess\SQLConnection.cs" />
     <Compile Include="DataModel\Adresse.cs" />
     <Compile Include="DataModel\AdresseAlternativ.cs" />
