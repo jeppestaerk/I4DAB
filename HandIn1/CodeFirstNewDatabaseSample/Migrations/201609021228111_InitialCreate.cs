@@ -1,9 +1,9 @@
-
+using System;
+using System.Data.Entity.Migrations;
 
 namespace CodeFirstNewDatabaseSample.Migrations
 {   
-    using System;
-    using System.Data.Entity.Migrations;
+  
     
     public partial class InitialCreate : DbMigration
     {

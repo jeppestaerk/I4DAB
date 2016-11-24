@@ -26,17 +26,14 @@ namespace HandIn3.DataAccess
         public void InsertNewPerson(Person person)
         {
 
-            this.SetCurrentAdress(person.FolkeregisterAdresse.AdresseId);
+            this.SetCurrentAdresse(person.FolkeregisterAdresse.Vejnavn,person.FolkeregisterAdresse.Husnummer);
 
             if (_locadresse == null)
             {
                     InsertNewAdresse(person.FolkeregisterAdresse);
             }
 
-            if (person.FolkeregisterAdresse.AdresseId != _locadresse.AdresseId)
-            {
-                InsertNewAdresse(person.FolkeregisterAdresse);
-            }
+           
 
             try
             {
@@ -63,6 +60,7 @@ namespace HandIn3.DataAccess
                     person.PersonId = (long)cmd.ExecuteScalar();
 
                     _locPerson = person;
+                    _locadresse = null;
                 }
             }
             finally
@@ -74,44 +72,44 @@ namespace HandIn3.DataAccess
             }
         }
 
-        public void SetCurrentAdress(long id)
-        {
-            SqlDataReader rdr = null;
+        //public void SetCurrentAdress(long id)
+        //{
+        //    SqlDataReader rdr = null;
 
-            try
-            {
-                _conn.Open();
+        //    try
+        //    {
+        //        _conn.Open();
 
-                SqlCommand cmd = new SqlCommand($"SELECT * FROM Adresse WHERE AdresseID = '{id}'", _conn);
+        //        SqlCommand cmd = new SqlCommand($"SELECT * FROM Adresse WHERE AdresseID = '{id}'", _conn);
 
-                rdr = cmd.ExecuteReader();
+        //        rdr = cmd.ExecuteReader();
 
-                while (rdr.Read())
-                {
-                    Console.WriteLine($"Adresse: {rdr["Vejnavn"]} {rdr["Husnummer"]} {rdr["Bynavn"]}");
-                    _locadresse = new Adresse();
-                    _locadresse.AdresseId = (long)rdr["AdresseID"];
-                    _locadresse.Bynavn = (string)rdr["Bynavn"];
-                    _locadresse.Husnummer = (string)rdr["Husnummer"];
-                    _locadresse.Postnummer = (string)rdr["Postnummer"];
-                    _locadresse.Vejnavn = (string)rdr["Vejnavn"];
-                    break;
+        //        while (rdr.Read())
+        //        {
+        //            Console.WriteLine($"Adresse: {rdr["Vejnavn"]} {rdr["Husnummer"]} {rdr["Bynavn"]}");
+        //            _locadresse = new Adresse();
+        //            _locadresse.AdresseId = (long)rdr["AdresseID"];
+        //            _locadresse.Bynavn = (string)rdr["Bynavn"];
+        //            _locadresse.Husnummer = (string)rdr["Husnummer"];
+        //            _locadresse.Postnummer = (string)rdr["Postnummer"];
+        //            _locadresse.Vejnavn = (string)rdr["Vejnavn"];
+        //            break;
 
-                }
-            }
-            finally
-            {
-                if (rdr != null)
-                {
-                    rdr.Close();
-                }
+        //        }
+        //    }
+        //    finally
+        //    {
+        //        if (rdr != null)
+        //        {
+        //            rdr.Close();
+        //        }
 
-                if (_conn != null)
-                {
-                    _conn.Close();
-                }
-            }
-        }
+        //        if (_conn != null)
+        //        {
+        //            _conn.Close();
+        //        }
+        //    }
+        //}
 
 
 
@@ -179,6 +177,94 @@ namespace HandIn3.DataAccess
                     _locPerson.Efternavn = (string)rdr["Efternavn"];
                     _locPerson.PersonType = (string)rdr["PersonType"];
                     _locPerson.FolkeregisterAdresse.AdresseId = (long)rdr["AdresseID"];
+                    break;
+
+                }
+            }
+            finally
+            {
+                if (rdr != null)
+                {
+                    rdr.Close();
+                }
+
+                if (_conn != null)
+                {
+                    _conn.Close();
+                }
+            }
+        }
+
+        public void InsertTelefon(Telefon telefon)
+        {
+            SqlDataReader rdr = null;
+
+
+            try
+            {
+                _conn.Open();
+
+                SqlCommand cmd = new SqlCommand($"SELECT * FROM Person WHERE Fornavn = '{telefon.Person.Fornavn}' AND" +
+                                                $" Mellemnavn = '{telefon.Person.Mellemnavn}' AND" +
+                                                $" Efternavn = '{telefon.Person.Efternavn}'", _conn);
+
+                telefon.Person.Telefon.Add(telefon);
+                rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    _locPerson = new Person();
+                    _locPerson.PersonId = (long)rdr["PersonID"];
+                    _locPerson.Fornavn = (string)rdr["Fornavn"];
+                    _locPerson.Mellemnavn = (string)rdr["Mellemnavn"];
+                    _locPerson.Efternavn = (string)rdr["Efternavn"];
+                    _locPerson.PersonType = (string)rdr["PersonType"];
+                    break;
+
+                }
+
+                cmd = new SqlCommand($"Insert * FROM Person WHERE Fornavn = '{telefon.Person.Fornavn}' AND" +
+                                                $" Mellemnavn = '{telefon.Person.Mellemnavn}' AND" +
+                                                $" Efternavn = '{telefon.Person.Efternavn}'", _conn);
+
+            }
+            finally
+            {
+                if (rdr != null)
+                {
+                    rdr.Close();
+                }
+
+                if (_conn != null)
+                {
+                    _conn.Close();
+                }
+            }
+
+        }
+
+
+        public void SetCurrentAdresse(string Vejnavn, string Husnummer)
+        {
+            SqlDataReader rdr = null;
+
+            try
+            {
+                _conn.Open();
+
+                SqlCommand cmd = new SqlCommand($"SELECT * FROM Adresse WHERE Vejnavn = '{Vejnavn}' AND Husnummer = '{Husnummer}'", _conn);
+
+                rdr = cmd.ExecuteReader();
+
+                while (rdr.Read())
+                {
+                    //Console.WriteLine($"Navn: {rdr["Fornavn"]} {rdr["Mellemnavn"]} {rdr["Efternavn"]}");
+                    _locadresse = new Adresse();
+                    _locadresse.AdresseId = (long)rdr["AdresseID"];
+                    _locadresse.Bynavn = (string)rdr["Bynavn"];
+                    _locadresse.Husnummer = (string)rdr["Husnummer"];
+                    _locadresse.Postnummer = (string)rdr["Postnummer"];
+                    _locadresse.Vejnavn = (string)rdr["Vejnavn"];
                     break;
 
                 }
@@ -334,6 +420,9 @@ namespace HandIn3.DataAccess
 
         public void InsertNewTelefon(Telefon telefon)
         {
+
+
+
             try
             {
                 _conn.Open();
@@ -374,7 +463,6 @@ namespace HandIn3.DataAccess
                 string insertString = @"INSERT INTO Adresse(Vejnavn,Husnummer,Postnummer,Bynavn)
                                                     OUTPUT INSERTED.AdresseID  
                                                     VALUES (@Data1, @Data2, @Data3, @Data4)";
-                //_locPerson.FolkeregisterAdresse = new Adresse();
 
                 using (SqlCommand cmd = new SqlCommand(insertString, _conn))
                 {
@@ -392,22 +480,7 @@ namespace HandIn3.DataAccess
                 }
 
                 _locadresse = adresse;
-                //string updateString = @"UPDATE Person
-                //                    SET AdresseID = @Data1
-                //                    WHERE Person.PersonID = @Data2";
-
-                //using (SqlCommand cmd = new SqlCommand(updateString, _conn))
-                //{
-                //    cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data1";
-                //    cmd.Parameters.Add(cmd.CreateParameter()).ParameterName = "@Data2";
-
-                //    cmd.Parameters["@Data1"].Value = adresse.AdresseId;
-                //    cmd.Parameters["@Data2"].Value = _locPerson.PersonId;
-
-                //    var id = cmd.ExecuteNonQuery();
-
-                //    _locPerson.FolkeregisterAdresse.AdresseId = adresse.AdresseId;
-                //}
+               
             }
             finally
             {

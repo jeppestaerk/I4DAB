@@ -69,12 +69,7 @@ namespace HandIn3TestApplication
                 Telefonnummer = "50403000",
                 TelefonType = "mobil"
             };
-
-
-
-            //personkartotek.InsertNewPerson(n2Person);
-
-            //personkartotek
+       
 
             Telefon n2Telefon1 = new Telefon()
             {
@@ -97,14 +92,29 @@ namespace HandIn3TestApplication
 
 
 
-            personkartotek.SetCurrentPerson("Lars","Hjerrild");
+            personkartotek.InsertNewPerson(n1Person);
 
-            personkartotek.InsertNewTelefon(n2Telefon1);
-                
+            personkartotek.SetCurrentPerson("Jeppe","Stærk");
+            personkartotek.InsertNewTelefon(n1Telefon1);
+
+
+
+
+
+            //personkartotek.DeleteTelefon(6);
+            //personkartotek.DeletePerson("Jeppe", "Stærk");
+
+            //personkartotek.InsertNewPerson(n1Person);
+
+
+            // personkartotek.SetCurrentPerson("Lars","Hjerrild");
+
+            //personkartotek.InsertNewTelefon(n2Telefon1);
+
             //personkartotek.DeleteAdresse("Strandvejen","30B");
             //personkartotek.InsertNewAdresse(n1Adresse);         
 
-            //personkartotek.InsertNewPerson(n1Person);
+
             //personkartotek.InsertNewAdresse(n1Adresse);
             //personkartotek.InsertNewTelefon(n1Telefon1);
             //personkartotek.InsertNewTelefon(n1Telefon2);
