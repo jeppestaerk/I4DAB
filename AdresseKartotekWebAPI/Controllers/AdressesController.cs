@@ -123,7 +123,18 @@ namespace AdresseKartotekWebAPI.Controllers
             db.Adresses.Add(adresse);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = adresse.AdresseID }, adresse);
+            db.Entry(adresse).Reference(x => x.People).Load();
+
+            var AdresseDTO = new AdresseDTO()
+            {
+                Vejnavn = adresse.Vejnavn,
+                Bynavn = adresse.Bynavn,
+                Husnummer = adresse.Husnummer,
+                Postnummer = adresse.Postnummer
+            };
+
+
+            return CreatedAtRoute("DefaultApi", new { id = adresse.AdresseID }, AdresseDTO);
         }
 
         // DELETE: api/Adresses/5
