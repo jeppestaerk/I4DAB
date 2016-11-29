@@ -53,15 +53,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Appartmentcharacteristic.cs" />
-    <Compile Include="Models\HandIn4DbContext.cs" />
+    <Compile Include="BLL\Models\Appartmentcharacteristic.cs" />
+    <Compile Include="BLL\Models\HandIn4DbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\Reading.cs" />
-    <Compile Include="Models\Sensorcharacteristic.cs" />
+    <Compile Include="BLL\Models\Reading.cs" />
+    <Compile Include="BLL\Models\Sensorcharacteristic.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DAL\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
