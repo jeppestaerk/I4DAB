@@ -23,11 +23,9 @@ namespace HandIn4.DAL
 
        public void DeserializeJson(string json)
        {
-           DataSet dataSet = JsonConvert.DeserializeObject<DataSet>(json);
+           dynamic dataSet = JsonConvert.DeserializeObject<T>(json);
 
-           DataTable dataTable = dataSet.Tables[_table];
-
-           foreach (var item in dataTable.Rows)
+           foreach (var item in dataSet.Reading)
            {
                _data.Add(JsonConvert.DeserializeObject<T>(item.ToString()));
            }
