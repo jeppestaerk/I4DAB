@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using HandIn4.DAL;
 using HandIn4.Models;
 
 namespace HandIn4.BLL.Json

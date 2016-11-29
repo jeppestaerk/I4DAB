@@ -55,9 +55,7 @@
     <Compile Include="BLL\Json\JsonUtil.cs" />
     <Compile Include="BLL\Models\Appartmentcharacteristic.cs" />
     <Compile Include="BLL\Models\HandIn4DbContext.cs" />
-    <Compile Include="DAL\JsonDeserialize.cs" />
-    <Compile Include="DAL\JsonGet.cs" />
-    <Compile Include="DAL\Class1.cs" />
+    <Compile Include="DAL\JsonApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BLL\Models\Reading.cs" />
     <Compile Include="BLL\Models\Sensorcharacteristic.cs" />
