@@ -1,4 +1,4 @@
-﻿namespace HandIn4
+﻿namespace HandIn4.Models
 {
   public class Appartmentcharacteristic
   {

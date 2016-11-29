@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HandIn4
+namespace HandIn4.Models
 {
   public class Reading
   {
