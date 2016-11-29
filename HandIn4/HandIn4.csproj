@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Appartmentcharacteristic.cs" />
+    <Compile Include="Models\HandIn4DbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\Reading.cs" />
     <Compile Include="Models\Sensorcharacteristic.cs" />
