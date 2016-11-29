@@ -10,24 +10,26 @@ using Newtonsoft.Json;
 
 namespace HandIn4.DAL
 {
-   public class JsonDeserialize
+   public class JsonDeserialize<T>
    {
-       private List<Reading> _readings;
-       
-       public JsonDeserialize(List<Reading> readings)
+       private List<T> _data;
+       private readonly string _table;
+
+       public JsonDeserialize(List<T> data,string table)
        {
-           _readings = readings;
+           _data = data;
+           _table = table;
        }
 
        public void DeserializeJson(string json)
        {
            DataSet dataSet = JsonConvert.DeserializeObject<DataSet>(json);
 
-           DataTable dataTable = dataSet.Tables["reading"];
+           DataTable dataTable = dataSet.Tables[_table];
 
            foreach (var item in dataTable.Rows)
            {
-               _readings.Add(JsonConvert.DeserializeObject<Reading>(item.ToString()));
+               _data.Add(JsonConvert.DeserializeObject<T>(item.ToString()));
            }
 
        }
