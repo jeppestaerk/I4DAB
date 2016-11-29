@@ -3,7 +3,7 @@ using System.Net.Http.Headers;
 
 namespace HandIn4.DAL
 {
-  class JsonGet
+  public class JsonGet
   {
     private readonly string _url;
 
