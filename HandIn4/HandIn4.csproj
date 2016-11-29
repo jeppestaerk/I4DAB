@@ -54,7 +54,11 @@
   <ItemGroup>
     <Compile Include="BLL\Models\Appartmentcharacteristic.cs" />
     <Compile Include="BLL\Models\HandIn4DbContext.cs" />
+<<<<<<< HEAD
     <Compile Include="DAL\JsonDeserialize.cs" />
+=======
+    <Compile Include="DAL\JsonGet.cs" />
+>>>>>>> 5a462a1cb0447e4b37a650db1c42b29f5da97352
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BLL\Models\Reading.cs" />
     <Compile Include="BLL\Models\Sensorcharacteristic.cs" />
