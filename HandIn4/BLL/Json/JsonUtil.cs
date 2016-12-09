@@ -8,7 +8,7 @@ namespace HandIn4.BLL.Json
   {
 
     private string _portnumber, _hostname, _servicepath;
-    private string _fullservicepath;
+    public string _fullservicepath { get; set; }
 
 
     public JsonUtil(string hostname, string portnumber, string servicepath)
@@ -19,10 +19,12 @@ namespace HandIn4.BLL.Json
       _fullservicepath = "http://" + hostname + ":" + portnumber + "/" + _servicepath;
     }
 
+      
 
-    public List<Reading> getAllReadings() //Use Case 7
+
+      public List<ReadingRootobject> getAllReadings() //Use Case 7
     {
-      APIGetJSON<List<Reading>> getevents = new APIGetJSON<List<Reading>>(_fullservicepath + "reading");
+      APIGetJSON<List<ReadingRootobject>> getevents = new APIGetJSON<List<ReadingRootobject>>(_fullservicepath);
       return getevents.data;
     }
   }
